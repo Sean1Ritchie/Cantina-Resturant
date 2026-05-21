@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cantina — Le Grand Domaine, Stellenbosch</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&family=Cormorant:ital,wght@1,300;1,400&display=swap" rel="stylesheet" />
+
+<style>
+/* ─── RESET & ROOT ─────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:          #1a1510;
+  --terracotta:   #b5541c;
+  --sienna:       #8b3d14;
+  --parchment:    #f5f0e8;
+  --sand:         #e8dece;
+  --gold:         #c9a84c;
+  --gold-light:   #e8c97a;
+  --warm-white:   #faf7f2;
+  --charcoal:     #2e2820;
+  --clay:         #7a4a30;
+  --dusk:         #3d2e22;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-italic:  'Cormorant', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--warm-white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CUSTOM CURSOR ─────────────────────────────────────────── */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--terracotta);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.3s var(--ease-smooth), height 0.3s var(--ease-smooth), background 0.3s;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(181,84,28,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.35s var(--ease-smooth), width 0.4s var(--ease-smooth), height 0.4s var(--ease-smooth), opacity 0.3s;
+}
+
+.cursor.hover { width: 14px; height: 14px; background: var(--gold); }
+.cursor-ring.hover { width: 56px; height: 56px; opacity: 0.6; }
+
+/* ─── NAVIGATION ────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 28px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.5s var(--ease-smooth), padding 0.4s var(--ease-smooth), backdrop-filter 0.5s;
+}
+
+nav.scrolled {
+  background: rgba(26,21,16,0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 18px 60px;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--warm-white);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.nav-logo span {
+  font-size: 0.55rem;
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 4px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250,247,242,0.8);
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.4s var(--ease-smooth);
+}
+
+.nav-links a:hover { color: var(--warm-white); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink) !important;
+  background: var(--gold);
+  padding: 11px 24px;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s !important;
+}
+
+.nav-cta::after { display: none !important; }
+.nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+/* Hamburger */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: none;
+  padding: 4px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 26px; height: 1px;
+  background: var(--warm-white);
+  transition: transform 0.4s var(--ease-smooth), opacity 0.3s;
+}
+
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Mobile menu */
+.nav-mobile {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--ink);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-smooth);
+}
+
+.nav-mobile.open { opacity: 1; pointer-events: all; }
+
+.nav-mobile a {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 300;
+  color: var(--warm-white);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color 0.3s;
+}
+
+.nav-mobile a:hover { color: var(--gold); }
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+#hero {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(165deg, rgba(26,21,16,0.18) 0%, rgba(26,21,16,0.72) 100%),
+    url('https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/f30fc38e-b1d3-4c22-86bb-7674d99e2f7f/restaurant+in+Stellenbosch%2C+cantina') center/cover no-repeat;
+  transform: scale(1.08);
+  animation: heroZoom 18s var(--ease-smooth) forwards;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1.0); }
+}
+
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 80px 80px;
+  max-width: 900px;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s var(--ease-expo) 0.8s forwards;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.92;
+  color: var(--warm-white);
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1.2s var(--ease-expo) 1s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--sand);
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(245,240,232,0.75);
+  max-width: 460px;
+  margin-bottom: 52px;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s var(--ease-expo) 1.3s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s var(--ease-expo) 1.5s forwards;
+}
+
+.btn-primary {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--gold);
+  padding: 16px 36px;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s var(--ease-smooth);
+}
+
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.8);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.btn-ghost::before {
+  content: '';
+  display: block;
+  width: 32px; height: 1px;
+  background: var(--gold);
+  transition: width 0.4s var(--ease-smooth);
+}
+
+.btn-ghost:hover { color: var(--warm-white); }
+.btn-ghost:hover::before { width: 50px; }
+
+/* Scroll indicator */
+.hero-scroll {
+  position: absolute;
+  bottom: 40px; right: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeIn 1s var(--ease-expo) 2.2s forwards;
+}
+
+.hero-scroll span {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.5);
+  writing-mode: vertical-lr;
+}
+
+.scroll-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(0.7); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ─── ANIMATIONS ────────────────────────────────────────────── */
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
+}
+
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
+}
+
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo);
+}
+
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ─── MARQUEE DIVIDER ───────────────────────────────────────── */
+.marquee-strip {
+  background: var(--ink);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.marquee-inner {
+  display: inline-flex;
+  animation: marqueeScroll 28s linear infinite;
+}
+
+.marquee-inner span {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  padding: 0 40px;
+}
+
+.marquee-inner .dot {
+  color: var(--terracotta);
+  font-style: normal;
+  padding: 0;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── STORY / IDENTITY SECTION ──────────────────────────────── */
+#story {
+  background: var(--warm-white);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.story-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.story-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 8s var(--ease-smooth);
+}
+
+.story-visual:hover img { transform: scale(1.04); }
+
+.story-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26,21,16,0.15) 0%, transparent 70%);
+}
+
+.story-tag {
+  position: absolute;
+  bottom: 48px; left: 48px;
+  background: var(--terracotta);
+  color: var(--warm-white);
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+}
+
+.story-text {
+  padding: 100px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--warm-white);
+}
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 36px; height: 1px;
+  background: var(--terracotta);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 36px;
+  letter-spacing: -0.01em;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--terracotta);
+}
+
+.story-body {
+  font-family: var(--font-body);
+  font-size: 0.93rem;
+  line-height: 1.95;
+  color: var(--charcoal);
+  font-weight: 300;
+  margin-bottom: 24px;
+  max-width: 440px;
+}
+
+.story-detail {
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--sand);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.detail-item label {
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.detail-item p {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* ─── EXPERIENCE SECTION ────────────────────────────────────── */
+#experience {
+  background: var(--ink);
+  padding: 140px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.exp-bg-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 20vw, 22rem);
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(201,168,76,0.04);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+
+.exp-header {
+  text-align: center;
+  margin-bottom: 100px;
+  position: relative;
+  z-index: 1;
+}
+
+.exp-header .section-label { justify-content: center; color: var(--gold); }
+.exp-header .section-label::before { background: var(--gold); }
+
+.exp-header .section-title { color: var(--warm-white); }
+.exp-header .section-title em { color: var(--gold); }
+
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.exp-card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  cursor: none;
+}
+
+.exp-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s var(--ease-smooth);
+}
+
+.exp-card:hover img { transform: scale(1.07); }
+
+.exp-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,21,16,0.88) 0%, transparent 55%);
+  transition: background 0.5s;
+}
+
+.exp-card:hover .exp-card-overlay {
+  background: linear-gradient(to top, rgba(26,21,16,0.92) 0%, rgba(26,21,16,0.2) 55%);
+}
+
+.exp-card-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 36px 32px;
+  transform: translateY(8px);
+  transition: transform 0.5s var(--ease-smooth);
+}
+
+.exp-card:hover .exp-card-content { transform: translateY(0); }
+
+.exp-card-number {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.exp-card-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--warm-white);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.exp-card-desc {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: rgba(245,240,232,0.65);
+  font-weight: 300;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s var(--ease-smooth) 0.05s, transform 0.5s var(--ease-smooth) 0.05s;
+}
+
+.exp-card:hover .exp-card-desc { opacity: 1; transform: translateY(0); }
+
+/* ─── DISHES / GALLERY ──────────────────────────────────────── */
+#dishes {
+  background: var(--parchment);
+  padding: 140px 80px;
+}
+
+.dishes-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 72px;
+}
+
+.dishes-header-left .section-title { margin-bottom: 0; }
+
+.dishes-link {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: gap 0.3s var(--ease-smooth);
+  margin-bottom: 8px;
+}
+
+.dishes-link::after {
+  content: '→';
+  font-size: 1rem;
+  transition: transform 0.3s var(--ease-smooth);
+}
+
+.dishes-link:hover { gap: 18px; }
+.dishes-link:hover::after { transform: translateX(4px); }
+
+.dishes-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+
+.dish-item {
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+}
+
+.dish-item:first-child {
+  grid-row: 1 / 3;
+  aspect-ratio: unset;
+}
+
+.dish-item img {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease-smooth);
+}
+
+.dish-item:hover img { transform: scale(1.05); }
+
+.dish-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px 24px;
+  background: linear-gradient(to top, rgba(26,21,16,0.7) 0%, transparent 100%);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--warm-white);
+  transform: translateY(4px);
+  transition: transform 0.4s var(--ease-smooth);
+}
+
+.dish-item:hover .dish-label { transform: translateY(0); }
+
+/* ─── WINE SECTION ──────────────────────────────────────────── */
+#wine {
+  background: var(--dusk);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 90vh;
+}
+
+.wine-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.wine-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s var(--ease-smooth);
+}
+
+.wine-visual:hover img { transform: scale(1.04); }
+
+.wine-text {
+  padding: 100px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--dusk);
+}
+
+.wine-text .section-label { color: var(--gold); }
+.wine-text .section-label::before { background: var(--gold); }
+.wine-text .section-title { color: var(--warm-white); }
+.wine-text .section-title em { color: var(--gold); }
+
+.wine-body {
+  font-family: var(--font-body);
+  font-size: 0.93rem;
+  line-height: 1.95;
+  color: rgba(245,240,232,0.65);
+  font-weight: 300;
+  margin-bottom: 56px;
+  max-width: 420px;
+}
+
+.wine-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.wine-feature {
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(245,240,232,0.1);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.wine-feature:first-child { border-top: 1px solid rgba(245,240,232,0.1); }
+
+.wine-feature-icon {
+  width: 38px; height: 38px;
+  border: 1px solid rgba(201,168,76,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.wine-feature-text strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--warm-white);
+  margin-bottom: 2px;
+}
+
+.wine-feature-text span {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.5);
+  font-weight: 300;
+}
+
+/* ─── PARALLAX SECTION ──────────────────────────────────────── */
+#parallax {
+  position: relative;
+  height: 70vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parallax-bg {
+  position: absolute;
+  inset: -15%;
+  background:
+    linear-gradient(rgba(26,21,16,0.5), rgba(26,21,16,0.5)),
+    url('https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/689476a7-7c01-4a52-9a02-5fee2240b1f8/Screenshot+2025-10-22+at+14.29.25.png') center/cover no-repeat;
+  will-change: transform;
+}
+
+.parallax-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+  padding: 0 40px;
+}
+
+.parallax-quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 300;
+  color: var(--warm-white);
+  line-height: 1.4;
+  margin-bottom: 28px;
+}
+
+.parallax-attribution {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ─── RESERVATION CTA ───────────────────────────────────────── */
+#reservation {
+  background: var(--warm-white);
+  padding: 160px 80px;
+  text-align: center;
+  position: relative;
+}
+
+.reservation-bg-ornament {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  border: 1px solid rgba(181,84,28,0.06);
+  pointer-events: none;
+}
+
+.reservation-bg-ornament::before {
+  content: '';
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(181,84,28,0.08);
+}
+
+.reservation-bg-ornament::after {
+  content: '';
+  position: absolute;
+  inset: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(181,84,28,0.05);
+}
+
+.reservation-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 28px;
+}
+
+.reservation-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.reservation-title em {
+  font-style: italic;
+  color: var(--terracotta);
+}
+
+.reservation-sub {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--charcoal);
+  font-weight: 300;
+  max-width: 480px;
+  margin: 0 auto 56px;
+}
+
+.reservation-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 56px;
+  padding-top: 48px;
+  border-top: 1px solid var(--sand);
+}
+
+.res-info-item {
+  text-align: center;
+}
+
+.res-info-item label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 6px;
+}
+
+.res-info-item p {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.res-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--sand);
+}
+
+/* ─── INSTAGRAM GALLERY ─────────────────────────────────────── */
+#gallery {
+  padding: 120px 80px 140px;
+  background: var(--parchment);
+}
+
+.gallery-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.gallery-handle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  text-decoration: none;
+  margin-top: 16px;
+  transition: color 0.3s;
+}
+
+.gallery-handle svg {
+  width: 16px; height: 16px;
+  fill: currentColor;
+}
+
+.gallery-handle:hover { color: var(--sienna); }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  cursor: none;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s var(--ease-smooth);
+  filter: brightness(0.97) saturate(1.05);
+}
+
+.gallery-item:hover img { transform: scale(1.08); filter: brightness(1) saturate(1.1); }
+
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26,21,16,0.45);
+  opacity: 0;
+  transition: opacity 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+.gallery-item-overlay svg {
+  width: 28px; height: 28px;
+  fill: var(--warm-white);
+}
+
+/* ─── LOCATION SECTION ──────────────────────────────────────── */
+#location {
+  background: var(--ink);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 70vh;
+}
+
+.location-map {
+  position: relative;
+  overflow: hidden;
+  background: var(--charcoal);
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(rgba(26,21,16,0.6), rgba(26,21,16,0.6)),
+    url('https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136756240-F7CPW09OH0S6YY4707N5/Screenshot+2025-10-22+at+14.38.38.png') center/cover;
+  position: relative;
+}
+
+.map-pin {
+  width: 48px; height: 48px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.map-pin::before {
+  content: '';
+  width: 10px; height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.map-pin::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.3);
+  animation: mapPulse 2.4s ease-out infinite;
+}
+
+@keyframes mapPulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.location-info {
+  padding: 80px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.location-info .section-label { color: var(--gold); }
+.location-info .section-label::before { background: var(--gold); }
+.location-info .section-title { color: var(--warm-white); font-size: clamp(2rem, 3.5vw, 3rem); }
+
+.contact-details {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(245,240,232,0.08);
+}
+
+.contact-item:first-child { border-top: 1px solid rgba(245,240,232,0.08); }
+
+.contact-icon {
+  font-size: 1.1rem;
+  min-width: 24px;
+  color: var(--gold);
+  margin-top: 2px;
+}
+
+.contact-item-text label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.4);
+  margin-bottom: 4px;
+}
+
+.contact-item-text p, .contact-item-text a {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--warm-white);
+  text-decoration: none;
+  line-height: 1.5;
+}
+
+.contact-item-text a:hover { color: var(--gold); }
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+}
+
+.hours-grid span { color: rgba(245,240,232,0.5); font-family: var(--font-body); font-size: 0.82rem; }
+.hours-grid strong { color: var(--warm-white); font-family: var(--font-body); font-size: 0.82rem; font-weight: 400; }
+
+/* ─── FOOTER ────────────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(245,240,232,0.06);
+  padding: 72px 80px 48px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 64px;
+}
+
+.footer-brand-name {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--warm-white);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.footer-brand-sub {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.footer-tagline {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: rgba(245,240,232,0.45);
+  font-weight: 300;
+  max-width: 280px;
+  margin-bottom: 32px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-social a {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(245,240,232,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(245,240,232,0.5);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+
+.footer-col h5 {
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.35);
+  margin-bottom: 24px;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-col ul a {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: rgba(245,240,232,0.55);
+  text-decoration: none;
+  font-weight: 300;
+  transition: color 0.3s;
+}
+
+.footer-col ul a:hover { color: var(--warm-white); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 32px;
+  border-top: 1px solid rgba(245,240,232,0.06);
+}
+
+.footer-copy {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: rgba(245,240,232,0.25);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.footer-cw {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  color: rgba(245,240,232,0.25);
+  font-weight: 300;
+}
+
+.footer-cw a {
+  color: var(--gold);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.footer-cw a:hover { opacity: 1; }
+
+/* ─── PAGE LOADER ───────────────────────────────────────────── */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  background: var(--ink);
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  transition: opacity 0.8s var(--ease-smooth), visibility 0.8s;
+}
+
+.page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-logo {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: var(--warm-white);
+  letter-spacing: 0.1em;
+}
+
+.loader-line {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  animation: loaderExpand 1.4s var(--ease-expo) 0.3s forwards;
+}
+
+@keyframes loaderExpand {
+  from { width: 0; }
+  to   { width: 120px; }
+}
+
+.loader-count {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: rgba(245,240,232,0.4);
+}
+
+/* ─── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  nav { padding: 24px 40px; }
+  nav.scrolled { padding: 16px 40px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+
+  #story, #wine, #location { grid-template-columns: 1fr; }
+  .story-visual { height: 55vw; max-height: 500px; }
+  .wine-visual { height: 55vw; max-height: 400px; }
+  .story-text, .wine-text, .location-info { padding: 80px 40px; }
+
+  .exp-grid { grid-template-columns: 1fr 1fr; }
+  .exp-grid .exp-card:nth-child(3) { display: none; }
+
+  .dishes-grid { grid-template-columns: 1fr 1fr; }
+  .dish-item:first-child { grid-row: auto; }
+
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+  .gallery-item:nth-child(n+4) { display: none; }
+
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  #experience, #dishes, #gallery, #reservation { padding-left: 40px; padding-right: 40px; }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 20px 24px; }
+  nav.scrolled { padding: 14px 24px; }
+
+  .hero-content { padding: 0 24px 60px; }
+  .hero-scroll { right: 24px; }
+
+  .section-title { font-size: clamp(1.8rem, 7vw, 3rem); }
+
+  .story-text { padding: 60px 24px; }
+  .story-detail { grid-template-columns: 1fr; gap: 20px; }
+
+  .wine-text { padding: 60px 24px; }
+
+  #experience { padding: 100px 24px; }
+  .exp-grid { grid-template-columns: 1fr; }
+  .exp-grid .exp-card:nth-child(n+2) { display: none; }
+  .exp-card { aspect-ratio: 4/3; }
+
+  #dishes { padding: 100px 24px; }
+  .dishes-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .dishes-grid { grid-template-columns: 1fr; }
+
+  #gallery { padding: 80px 24px 100px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-item:nth-child(n+5) { display: none; }
+
+  #reservation { padding: 100px 24px; }
+  .reservation-info { flex-direction: column; gap: 28px; }
+  .res-divider { display: none; }
+
+  .location-info { padding: 60px 24px; }
+  .location-map .map-placeholder { min-height: 300px; }
+
+  footer { padding: 60px 24px 36px; }
+  .footer-top { grid-template-columns: 1fr; gap: 40px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Cantina</div>
+  <div class="loader-line"></div>
+  <div class="loader-count" id="loaderCount">0%</div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="nav-mobile" id="mobileNav">
+  <a href="#story" class="mobile-link">Story</a>
+  <a href="#experience" class="mobile-link">Experience</a>
+  <a href="#dishes" class="mobile-link">Menu</a>
+  <a href="#wine" class="mobile-link">Wine</a>
+  <a href="#gallery" class="mobile-link">Gallery</a>
+  <a href="#location" class="mobile-link">Find Us</a>
+  <a href="tel:+27656729616" class="mobile-link" style="color:var(--gold);">Reserve</a>
+</div>
+
+<!-- ── NAVIGATION ─────────────────────────────────────────────── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    Cantina
+    <span>Le Grand Domaine · Stellenbosch</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#dishes">Menu</a></li>
+    <li><a href="#wine">Wine</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#location">Find Us</a></li>
+    <li><a href="tel:+27656729616" class="nav-cta">Reserve</a></li>
+  </ul>
+
+  <div class="nav-hamburger" id="hamburger" role="button" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Le Grand Domaine · Stellenbosch · Est. 2024</div>
+    <h1 class="hero-title">
+      Where wine<br><em>finds its</em><br>table
+    </h1>
+    <p class="hero-subtitle">
+      A Basque-inspired cantina in the heart of the Cape Winelands — small plates, shared paella, and a wine list that celebrates the world.
+    </p>
+    <div class="hero-actions">
+      <a href="#experience" class="btn-primary">Discover Cantina</a>
+      <a href="#dishes" class="btn-ghost">View Menu</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ── MARQUEE STRIP ───────────────────────────────────────────── -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-inner">
+    <span>Basque Inspired</span><span class="dot">·</span>
+    <span>Stellenbosch Terroir</span><span class="dot">·</span>
+    <span>Shared Paella</span><span class="dot">·</span>
+    <span>Global Wine List</span><span class="dot">·</span>
+    <span>Small Plates</span><span class="dot">·</span>
+    <span>All-Day Dining</span><span class="dot">·</span>
+    <span>7 Church Street</span><span class="dot">·</span>
+    <span>Basque Inspired</span><span class="dot">·</span>
+    <span>Stellenbosch Terroir</span><span class="dot">·</span>
+    <span>Shared Paella</span><span class="dot">·</span>
+    <span>Global Wine List</span><span class="dot">·</span>
+    <span>Small Plates</span><span class="dot">·</span>
+    <span>All-Day Dining</span><span class="dot">·</span>
+    <span>7 Church Street</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- ── STORY / IDENTITY ────────────────────────────────────────── -->
+<section id="story">
+  <div class="story-visual reveal-left">
+    <img
+      src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/f30fc38e-b1d3-4c22-86bb-7674d99e2f7f/restaurant+in+Stellenbosch%2C+cantina"
+      alt="Cantina interior — warm candlelit dining space"
+      loading="lazy"
+    />
+    <div class="story-visual-overlay"></div>
+    <div class="story-tag">Stellenbosch, Western Cape</div>
+  </div>
+
+  <div class="story-text reveal-right">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">
+      An ode to<br>gathering &amp;<br><em>good wine</em>
+    </h2>
+    <p class="story-body">
+      Cantina was born from a simple belief: that the most profound dining experiences happen when barriers dissolve — between kitchen and table, between continents of flavour, between strangers who share a bottle.
+    </p>
+    <p class="story-body">
+      In partnership with Le Grand Domaine, we have created an intimate space in the heart of Stellenbosch that echoes the spirit of a Basque pintxos bar — convivial, unhurried, and deeply alive with flavour.
+    </p>
+
+    <div class="story-detail">
+      <div class="detail-item">
+        <label>Location</label>
+        <p>7 Church Street<br>Stellenbosch Central</p>
+      </div>
+      <div class="detail-item">
+        <label>Hours</label>
+        <p>Mon – Sat<br>12:00 – 21:30</p>
+      </div>
+      <div class="detail-item">
+        <label>Dining Style</label>
+        <p>Walk-in<br>All-day</p>
+      </div>
+      <div class="detail-item">
+        <label>Cuisine</label>
+        <p>Basque-inspired<br>Sharing plates</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SIGNATURE EXPERIENCE ────────────────────────────────────── -->
+<section id="experience">
+  <div class="exp-bg-text" aria-hidden="true">Cantina</div>
+
+  <div class="exp-header reveal">
+    <div class="section-label">The Experience</div>
+    <h2 class="section-title">Three reasons to<br><em>pull up a chair</em></h2>
+  </div>
+
+  <div class="exp-grid">
+    <!-- Card 1 -->
+    <div class="exp-card reveal">
+      <img
+        src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136756240-F7CPW09OH0S6YY4707N5/Screenshot+2025-10-22+at+14.38.38.png"
+        alt="Paella sharing experience"
+        loading="lazy"
+      />
+      <div class="exp-card-overlay"></div>
+      <div class="exp-card-content">
+        <div class="exp-card-number">01</div>
+        <h3 class="exp-card-title">The Paella Ritual</h3>
+        <p class="exp-card-desc">A socarrat-crusted, saffron-kissed paella brought to the table whole. Pass the spoon. Start a conversation.</p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="exp-card reveal" style="transition-delay: 0.12s;">
+      <img
+        src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136523983-SV4CXFBSSOBTXI0OUYZK/Screenshot+2025-10-22+at+14.30.05.png"
+        alt="Small plates and pintxos"
+        loading="lazy"
+      />
+      <div class="exp-card-overlay"></div>
+      <div class="exp-card-content">
+        <div class="exp-card-number">02</div>
+        <h3 class="exp-card-title">Spanish Small Plates</h3>
+        <p class="exp-card-desc">Inspired by the pintxos bars of San Sebastián — bold, precise, made for sharing and lingering.</p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="exp-card reveal" style="transition-delay: 0.24s;">
+      <img
+        src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136762796-08GPXMSYCROFB92YIUBD/Screenshot+2025-10-22+at+14.38.03.png"
+        alt="Curated wine selection"
+        loading="lazy"
+      />
+      <div class="exp-card-overlay"></div>
+      <div class="exp-card-content">
+        <div class="exp-card-number">03</div>
+        <h3 class="exp-card-title">A Global Wine List</h3>
+        <p class="exp-card-desc">Curated with obsession. From the Cape's most celebrated estates to the hidden cellars of Burgundy and Rioja.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURED DISHES ─────────────────────────────────────────── -->
+<section id="dishes">
+  <div class="dishes-header">
+    <div class="dishes-header-left">
+      <div class="section-label reveal">Signature Plates</div>
+      <h2 class="section-title reveal">Food made for<br><em>the table</em></h2>
+    </div>
+    <a href="#" class="dishes-link reveal">View full menu</a>
+  </div>
+
+  <div class="dishes-grid">
+    <div class="dish-item reveal">
+      <img
+        src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136565757-D1ZHCZ6VT1KFTT31VXH2/Screenshot+2025-10-22+at+14.31.42.png"
+        alt="Paella — signature dish"
+        loading="lazy"
+      />
+      <div class="dish-label">Paella del Mar</div>
+    </div>
+    <div class="dish-item reveal" style="transition-delay:0.1s;">
+      <img
+        src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136523277-P3RDCA3Y3JZ34W5X5V30/Screenshot+2025-10-22+at+14.29.58.png"
+        alt="Seasonal small plates"
+        loading="lazy"
+      />
+      <div class="dish-label">Pintxos Selection</div>
+    </div>
+    <div class="dish-item reveal" style="transition-delay:0.2s;">
+      <img
+        src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136544656-FNSS7HHCJC29J86D0NXL/Screenshot+2025-10-22+at+14.30.24.png"
+        alt="House specialty"
+        loading="lazy"
+      />
+      <div class="dish-label">Charcuterie Cantina</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WINE & ATMOSPHERE ───────────────────────────────────────── -->
+<section id="wine">
+  <div class="wine-visual reveal-left">
+    <img
+      src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136756240-F7CPW09OH0S6YY4707N5/Screenshot+2025-10-22+at+14.38.38.png"
+      alt="Wine selection at Cantina"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="wine-text reveal-right">
+    <div class="section-label">The Cellar</div>
+    <h2 class="section-title">
+      Wine that<br>tells a<br><em>story</em>
+    </h2>
+    <p class="wine-body">
+      Our wine list is a love letter to the vine — from the sun-baked slopes of Stellenbosch to the ancient cellars of Rioja. Every bottle is chosen to complement the shared, convivial spirit of Cantina.
+    </p>
+    <div class="wine-features">
+      <div class="wine-feature">
+        <div class="wine-feature-icon">🍷</div>
+        <div class="wine-feature-text">
+          <strong>Cape Winelands Selection</strong>
+          <span>Curated local producers, seasonal</span>
+        </div>
+      </div>
+      <div class="wine-feature">
+        <div class="wine-feature-icon">🌍</div>
+        <div class="wine-feature-text">
+          <strong>Global Wine Programme</strong>
+          <span>Spain, France, Italy & beyond</span>
+        </div>
+      </div>
+      <div class="wine-feature">
+        <div class="wine-feature-icon">🥂</div>
+        <div class="wine-feature-text">
+          <strong>By the Glass</strong>
+          <span>Rotating selections, always evolving</span>
+        </div>
+      </div>
+      <div class="wine-feature">
+        <div class="wine-feature-icon">🍸</div>
+        <div class="wine-feature-text">
+          <strong>Craft Cocktails</strong>
+          <span>Spanish-inspired, locally made</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PARALLAX QUOTE ──────────────────────────────────────────── -->
+<section id="parallax">
+  <div class="parallax-bg" id="parallaxBg"></div>
+  <div class="parallax-content reveal">
+    <p class="parallax-quote">
+      "The best dining is never about the food alone — it is about the feeling that lingers long after the last glass."
+    </p>
+    <p class="parallax-attribution">Cantina · Stellenbosch</p>
+  </div>
+</section>
+
+<!-- ── RESERVATION CTA ─────────────────────────────────────────── -->
+<section id="reservation">
+  <div class="reservation-bg-ornament" aria-hidden="true"></div>
+  <div class="reservation-eyebrow reveal">Walk-in Welcome · No Reservations Required</div>
+  <h2 class="reservation-title reveal">
+    Come as<br>you <em>are</em>
+  </h2>
+  <p class="reservation-sub reveal">
+    Cantina is a space without pretension. Pull up a chair, order something to share, and let the afternoon unfold. We are open Monday through Saturday for all-day dining.
+  </p>
+  <div class="reveal">
+    <a href="tel:+27656729616" class="btn-primary">Call Us · 065 672 9616</a>
+  </div>
+  <div class="reservation-info reveal">
+    <div class="res-info-item">
+      <label>Address</label>
+      <p>7 Church Street<br>Stellenbosch Central</p>
+    </div>
+    <div class="res-divider"></div>
+    <div class="res-info-item">
+      <label>Hours</label>
+      <p>Mon – Sat<br>12:00 – 21:30</p>
+    </div>
+    <div class="res-divider"></div>
+    <div class="res-info-item">
+      <label>Dining</label>
+      <p>All-Day<br>Walk-in Only</p>
+    </div>
+    <div class="res-divider"></div>
+    <div class="res-info-item">
+      <label>Sundays</label>
+      <p>Closed</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── INSTAGRAM GALLERY ───────────────────────────────────────── -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <div class="section-label" style="justify-content:center;">Behind the Scenes</div>
+    <h2 class="section-title" style="font-size:clamp(1.8rem,4vw,3rem);">Life at Cantina</h2>
+    <a href="https://www.instagram.com/cantina_stellenbosch" target="_blank" rel="noopener" class="gallery-handle">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      @cantina_stellenbosch
+    </a>
+  </div>
+
+  <div class="gallery-grid">
+    <!-- Gallery items using available images in a mosaic style -->
+    <div class="gallery-item reveal">
+      <img src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/f30fc38e-b1d3-4c22-86bb-7674d99e2f7f/restaurant+in+Stellenbosch%2C+cantina" alt="Cantina" loading="lazy" />
+      <div class="gallery-item-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.08s;">
+      <img src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136756240-F7CPW09OH0S6YY4707N5/Screenshot+2025-10-22+at+14.38.38.png" alt="Cantina food" loading="lazy" />
+      <div class="gallery-item-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.16s;">
+      <img src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136523983-SV4CXFBSSOBTXI0OUYZK/Screenshot+2025-10-22+at+14.30.05.png" alt="Cantina plates" loading="lazy" />
+      <div class="gallery-item-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.24s;">
+      <img src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136762796-08GPXMSYCROFB92YIUBD/Screenshot+2025-10-22+at+14.38.03.png" alt="Cantina atmosphere" loading="lazy" />
+      <div class="gallery-item-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+    <div class="gallery-item reveal" style="transition-delay:0.32s;">
+      <img src="https://images.squarespace-cdn.com/content/v1/5d0539fcae0fa4000173c0da/1761136544656-FNSS7HHCJC29J86D0NXL/Screenshot+2025-10-22+at+14.30.24.png" alt="Cantina dishes" loading="lazy" />
+      <div class="gallery-item-overlay"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LOCATION / CONTACT ───────────────────────────────────────── -->
+<section id="location">
+  <div class="location-map">
+    <div class="map-placeholder">
+      <div class="map-pin"></div>
+    </div>
+  </div>
+
+  <div class="location-info">
+    <div class="section-label reveal">Find Us</div>
+    <h2 class="section-title reveal">7 Church Street,<br><em>Stellenbosch</em></h2>
+
+    <div class="contact-details">
+      <div class="contact-item reveal">
+        <div class="contact-icon">📍</div>
+        <div class="contact-item-text">
+          <label>Address</label>
+          <p>7 Church St, Stellenbosch Central<br>Stellenbosch, 7600</p>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">📞</div>
+        <div class="contact-item-text">
+          <label>Phone</label>
+          <a href="tel:+27656729616">065 672 9616</a>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-item-text">
+          <label>Hours</label>
+          <div class="hours-grid">
+            <span>Monday – Saturday</span>
+            <strong>12:00 – 21:30</strong>
+            <span>Sunday</span>
+            <strong>Closed</strong>
+          </div>
+        </div>
+      </div>
+      <div class="contact-item reveal">
+        <div class="contact-icon">📸</div>
+        <div class="contact-item-text">
+          <label>Instagram</label>
+          <a href="https://www.instagram.com/cantina_stellenbosch" target="_blank" rel="noopener">@cantina_stellenbosch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Cantina</div>
+      <div class="footer-brand-sub">Le Grand Domaine · Stellenbosch</div>
+      <p class="footer-tagline">
+        A Basque-inspired cantina in the heart of the Cape Winelands — where every meal is an occasion and every glass tells a story.
+      </p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/cantina_stellenbosch" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" width="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="https://www.granddomaine.co.za" target="_blank" rel="noopener" aria-label="Le Grand Domaine">🍷</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Explore</h5>
+      <ul>
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#experience">The Experience</a></li>
+        <li><a href="#dishes">Menu</a></li>
+        <li><a href="#wine">Wine List</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Visit</h5>
+      <ul>
+        <li><a href="#location">Find Us</a></li>
+        <li><a href="tel:+27656729616">Call Us</a></li>
+        <li><a href="https://www.instagram.com/cantina_stellenbosch" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.granddomaine.co.za" target="_blank" rel="noopener">Le Grand Domaine</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Group</h5>
+      <ul>
+        <li><a href="https://www.chefswarehouse.co.za" target="_blank" rel="noopener">Chefs Warehouse</a></li>
+        <li><a href="https://www.chefswarehouse.co.za/about-1" target="_blank" rel="noopener">About Liam Tomlin</a></li>
+        <li><a href="https://www.chefswarehouse.co.za/giftvouchers" target="_blank" rel="noopener">Gift Vouchers</a></li>
+        <li><a href="https://www.chefswarehouse.co.za/careers" target="_blank" rel="noopener">Careers</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Cantina Stellenbosch. All rights reserved.</p>
+    <p class="footer-cw">Part of <a href="https://www.chefswarehouse.co.za" target="_blank" rel="noopener">Chefs Warehouse</a> by Liam Tomlin</p>
+  </div>
+</footer>
+
+<!-- ── JAVASCRIPT ──────────────────────────────────────────────── -->
+<script>
+// ── Page Loader
+(function() {
+  const loader = document.getElementById('pageLoader');
+  const count  = document.getElementById('loaderCount');
+  let progress = 0;
+
+  const tick = setInterval(() => {
+    progress += Math.random() * 22;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(tick);
+      count.textContent = '100%';
+      setTimeout(() => loader.classList.add('hidden'), 400);
+    }
+    count.textContent = Math.floor(progress) + '%';
+  }, 80);
+})();
+
+// ── Custom Cursor
+(function() {
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button, .dish-item, .exp-card, .gallery-item, .nav-hamburger').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
+    el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+  });
+})();
+
+// ── Sticky Nav
+(function() {
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+})();
+
+// ── Mobile Nav
+(function() {
+  const hamburger  = document.getElementById('hamburger');
+  const mobileNav  = document.getElementById('mobileNav');
+
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+})();
+
+// ── Scroll Reveal
+(function() {
+  const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  els.forEach(el => obs.observe(el));
+})();
+
+// ── Parallax
+(function() {
+  const bg = document.getElementById('parallaxBg');
+  if (!bg) return;
+
+  window.addEventListener('scroll', () => {
+    const section = bg.parentElement;
+    const rect    = section.getBoundingClientRect();
+    const ratio   = rect.top / window.innerHeight;
+    bg.style.transform = `translateY(${ratio * 60}px)`;
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
